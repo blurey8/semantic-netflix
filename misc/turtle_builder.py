@@ -32,7 +32,7 @@ df.head()
 
 # Menghapus beberapa kolom yang tidak digunakan
 
-df.drop(['show_id', 'duration', 'listed_in'], axis=1, inplace=True)
+df.drop(['duration', 'listed_in'], axis=1, inplace=True)
 
 # Menghapus beberapa baris karena mengandung karakter yang sulit diolah
 
@@ -45,7 +45,7 @@ df.reset_index()
 
 # Melakukan replacement NaN menjadi string untuk mempermudah pengerjaan
 
-df.columns = ['category', 'title', 'director',
+df.columns = ['id', 'category', 'title', 'director',
               'cast', 'country', 'dateAdded',
               'releaseYear', 'rating', 'description']
 df = df.replace(np.nan, 'No Data', regex=True)
@@ -109,12 +109,12 @@ prefixes = '''
 #    Prefixes
 ############################
 
-@prefix snr: <http://skulite.org/snr/> .
-@prefix snp: <http://skulite.org/snp/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+PREFIX snr: <http://skulite.org/snr/>
+PREFIX snp: <http://skulite.org/snp/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 '''
 
 # Class Properties
@@ -137,6 +137,7 @@ data_properties = '''
 ############################
 
 snp:title rdfs:domain snr:Content ; rdfs:range xsd:string .
+snp:id rdfs:domain snr:Content ; rdfs:range xsd:string .
 snp:description rdfs:domain snr:Content ; rdfs:range xsd:string .
 snp:releaseYear rdfs:domain snr:Content ; rdfs:range xsd:gYear .
 snp:category rdfs:domain snr:Content ; rdfs:range xsd:string .
@@ -164,9 +165,12 @@ individuals = '''
 
 # Pengolahan CSV menjadi berkas TTL yang didukung 
 
-columns = ['title', 'description', 'releaseYear',
+columns = ['title', 'id', 'description', 'releaseYear',
            'category', 'rating', 'director',
            'cast', 'country', 'dateAdded']
+
+def convert_id(string):
+    return '\"{}\"'.format(string)
 
 def convert_title_for_object(string):
     string = re.sub(r'[^\w\s]','', string)
@@ -197,11 +201,14 @@ def start_process():
             column_value = df_to_dict[i][current_column]
 
             if column_value != 'No Data':
-                
+                                
                 if current_column == 'title':
                     data += "snr:{} ".format(convert_title_for_object(column_value))
                     data += "rdf:type snr:Content ; "
                     column_value = convert_universal(column_value)
+                
+                if current_column == 'id':
+                    column_value = convert_id(column_value)
                 
                 if current_column == 'releaseYear':
                     column_value = convert_release(column_value)
