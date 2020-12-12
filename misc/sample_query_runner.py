@@ -239,8 +239,6 @@ for key in local_query_result:
 
 
 # Menyimpan hasil query dalam bentuk dictionary
-
-# dictlabels={}
 for row in remote_query_result:
     movie_details['distributor'] = row.distributor
     movie_details['producer'] = row.producer
