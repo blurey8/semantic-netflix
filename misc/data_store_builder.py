@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Tutle File Builder
+# # Data Store Builder
 # 
 # Dirancang oleh: Tim Skulite  
 #   
@@ -32,12 +32,13 @@ df.head()
 
 # Menghapus beberapa kolom yang tidak digunakan
 
-df.drop(['duration', 'listed_in'], axis=1, inplace=True)
+df.drop(['type'], axis=1, inplace=True)
 
 # Menghapus beberapa baris karena mengandung karakter yang sulit diolah
 
 df = df.drop([528,568,761,762,763,764,765,766,1448,2574,5715])
 df.reset_index()
+df.head()
 
 
 # In[4]:
@@ -45,10 +46,12 @@ df.reset_index()
 
 # Melakukan replacement NaN menjadi string untuk mempermudah pengerjaan
 
-df.columns = ['id', 'category', 'title', 'director',
+df.columns = ['id', 'title', 'director',
               'cast', 'country', 'dateAdded',
-              'releaseYear', 'rating', 'description']
+              'releaseYear', 'rating', 'playtime',
+              'category', 'description']
 df = df.replace(np.nan, 'No Data', regex=True)
+df.head()
 
 
 # In[5]:
@@ -136,18 +139,18 @@ data_properties = '''
 #    Data properties
 ############################
 
-snp:title rdfs:domain snr:Content ; rdfs:range xsd:string .
 snp:id rdfs:domain snr:Content ; rdfs:range xsd:string .
-snp:description rdfs:domain snr:Content ; rdfs:range xsd:string .
-snp:releaseYear rdfs:domain snr:Content ; rdfs:range xsd:gYear .
-snp:category rdfs:domain snr:Content ; rdfs:range xsd:string .
-snp:rating rdfs:domain snr:Content ; rdfs:range xsd:string .
+snp:title rdfs:domain snr:Content ; rdfs:range xsd:string .
 snp:director rdfs:domain snr:Content ; rdfs:range xsd:string .
 snp:cast rdfs:domain snr:Content ; rdfs:range xsd:string .
 snp:country rdfs:domain snr:Content ; rdfs:range xsd:string .
-snp:dateAdded rdfs:domain snr:Content ; rdfs:range xsd:date .
-snp:numberOfSeasons rdfs:domain snr:Series ; rdfs:range xsd:integer .
-snp:duration rdfs:domain snr:Film ; rdfs:range xsd:duration . 
+snp:dateAdded rdfs:domain snr:Content ; rdfs:range xsd:string .
+snp:releaseYear rdfs:domain snr:Content ; rdfs:range xsd:string .
+snp:rating rdfs:domain snr:Content ; rdfs:range xsd:string .
+snp:numOfSeasons rdfs:domain snr:Series ; rdfs:range xsd:string .
+snp:duration rdfs:domain snr:Film ; rdfs:range xsd:string . 
+snp:category rdfs:domain snr:Content ; rdfs:range xsd:string .
+snp:description rdfs:domain snr:Content ; rdfs:range xsd:string .
 '''
 
 # Individuals
@@ -163,11 +166,7 @@ individuals = '''
 # In[8]:
 
 
-# Pengolahan CSV menjadi berkas TTL yang didukung 
-
-columns = ['title', 'id', 'description', 'releaseYear',
-           'category', 'rating', 'director',
-           'cast', 'country', 'dateAdded']
+# Fungsi untuk mengolah data mentah
 
 def convert_id(string):
     return '\"{}\"'.format(string)
@@ -180,16 +179,38 @@ def convert_universal(string):
     string = string.replace("\"", "").replace("\'", "").replace("\n", " ")
     return '\"{}\"'.format(string)
 
+def convert_date_added(string):
+    return '\"{}\"'.format(convert_month_to_num(string))
+
 def convert_release(string):
     return '\"{}\"'.format(string)
     
 def convert_category_rating(string):
-    string = string.replace(" ", "-")
+    string = string.replace("\"", "").replace("\'", "")
     return '\"{}\"'.format(string)
     
-def convert_date_added(string):
-    return '\"{}\"'.format(convert_month_to_num(string))
+def convert_playtime(string):
+    duration_pattern = "^.*min"
+    season_pattern = "^.*(Seasons|Season)"
+
+    time_value = '\"{}\"'.format(string)
     
+    if re.match(duration_pattern,string):
+        return [time_value, "film"]
+    elif re.match(season_pattern,string):
+        return [time_value, "series"]
+
+
+# In[9]:
+
+
+# Pengolahan CSV menjadi berkas TTL yang didukung 
+
+columns = ['title', 'id', 'director',
+           'cast', 'country', 'dateAdded',
+           'releaseYear', 'rating', 'playtime',
+           'category', 'description']
+
 def start_process():
     global individuals
     
@@ -204,25 +225,35 @@ def start_process():
                                 
                 if current_column == 'title':
                     data += "snr:{} ".format(convert_title_for_object(column_value))
-                    data += "rdf:type snr:Content ; "
                     column_value = convert_universal(column_value)
                 
                 if current_column == 'id':
                     column_value = convert_id(column_value)
                 
+                if current_column == 'director' or current_column == 'cast' or current_column == 'country' or current_column == 'description':
+                    column_value = convert_universal(column_value)
+
+                if current_column == 'dateAdded':
+                    column_value = convert_date_added(column_value)                    
+                    
                 if current_column == 'releaseYear':
                     column_value = convert_release(column_value)
                 
-                if current_column == 'description' or current_column == 'director' or current_column == 'cast' or current_column == 'country':
-                    column_value = convert_universal(column_value)
-                    
-                if current_column == 'category' or current_column == 'rating':
+                if current_column == 'rating' or current_column == 'category':
                     column_value = convert_category_rating(column_value)
-                
-                if current_column == 'dateAdded':
-                    column_value = convert_date_added(column_value)
-        
-                data += 'snp:{} {}'.format(current_column, column_value)
+
+                if current_column != 'playtime':
+                    data += 'snp:{} {}'.format(current_column, column_value)
+                    
+                if current_column == 'playtime':
+                    converted_playtime = convert_playtime(column_value)
+                    
+                    if converted_playtime[1] == 'film':
+                        data += 'rdf:type snr:Film ; '
+                        data += 'snp:duration {}'.format(converted_playtime[0])
+                    else:
+                        data += 'rdf:type snr:Series ; '
+                        data += 'snp:numOfSeasons {}'.format(converted_playtime[0])
 
                 if j != len(columns) - 1:
                     data += ' ; '
@@ -230,14 +261,14 @@ def start_process():
                     data += ' .'
 
             else:
-                if current_column == 'dateAdded':
+                if current_column == 'description':
                     data = data[:-3]
                     data += ' .'
 
         individuals += data + '\n'
 
 
-# In[9]:
+# In[10]:
 
 
 # Memulai pemrosesan data
@@ -245,7 +276,7 @@ def start_process():
 start_process()
 
 
-# In[10]:
+# In[11]:
 
 
 # Compile menjadi file TTL
