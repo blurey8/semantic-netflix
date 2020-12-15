@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>SNX - {{detail_film.title}}</title>
+{% endblock meta %}
+
+{% block content %}
+  <div class="home">
+    <div class="odd">
+      <div class="film-title">{{detail_film.title}}</div>
+    </div>
+    <div class="even">
+      <div class="desc">Description:</div>
+      {{detail_film.description}}
+    </div>
+    <div class="odd">
+      <div class="desc">Director:</div>
+      {{detail_film.director}}
+    </div>
+    <div class="even">
+      <div class="desc">Released in:</div>
+      {{detail_film.releaseYear}}
+    </div>
+    <div class="odd">
+      <div class="desc">Category:</div>
+      {{detail_film.category}}
+    </div>
+    <div class="even">
+      <div class="desc">Date added:</div>
+      {{detail_film.dateAdded}}
+    </div>
+    <div class="odd">
+      <div class="desc">Country:</div>
+      {{detail_film.country}}
+    </div>
+    <div class="even">
+      <div class="desc">Duration:</div>
+      {{detail_film.duration}}
+    </div>
+    <div class="odd">
+      <div class="desc">Rating:</div>
+      {{detail_film.rating}}
+    </div>
+  </div>
+{% endblock content %}
