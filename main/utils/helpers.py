@@ -103,14 +103,14 @@ def get_film_detail_local(film_id):
     '''
     SELECT * WHERE { 
         ?uri snp:id %s;
-        snp:title ?title;
-        snp:director ?director;
-        snp:country ?country;
-        snp:dateAdded ?dateAdded;
-        snp:releaseYear ?releaseYear;
-        snp:rating ?rating;
-        snp:category ?category;
-        snp:description ?description;
+        OPTIONAL {?uri snp:title ?title.}
+        OPTIONAL {?uri snp:director ?director.}
+        OPTIONAL {?uri snp:country ?country.}
+        OPTIONAL {?uri snp:dateAdded ?dateAdded.}
+        OPTIONAL {?uri snp:releaseYear ?releaseYear.}
+        OPTIONAL {?uri snp:rating ?rating.}
+        OPTIONAL {?uri snp:category ?category.}
+        OPTIONAL {?uri snp:description ?description.}
         OPTIONAL {?uri snp:duration ?duration.}
         OPTIONAL {?uri snp:numOfSeasons ?season.}
     }
