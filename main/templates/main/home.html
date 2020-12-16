@@ -2,10 +2,40 @@
 {% load static %}
 
 {% block meta %}
-<title>Hello, world!</title>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+<title>SNX - Home</title>
 {% endblock meta %}
 
 {% block content %}
-  <h1>Hello, world!</h1>
-  <p><img src="{% static 'img/django-logo-negative.svg' %}"></p>
+  <div class="home">
+    <div class="greeting">
+      Selamat datang!
+    </div>
+    <div class="intro">
+      Berikut merupakan daftar film yang tersedia pada database SNX
+    </div>
+    <div class="subtable">
+      <table id="myTable" class="display">
+        <thead>
+          <tr>
+            <th>Judul Film</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for data in data_title%}
+            <tr>
+              <td><a href="/detail?id={{ data.id }}">{{ data.title }}</a></td>
+            </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    });
+  </script>
 {% endblock content %}
