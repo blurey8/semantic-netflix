@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .utils.constants import FUSEKI_URL, PREFIXES
-from .utils.helpers import get_data_from_local, get_film_data
+from .constants import FUSEKI_URL, PREFIXES
+from .utils.helpers import get_response_from_local, get_film_data
 
 '''
 Fungsi untuk mengambil data spesifik film
@@ -22,7 +22,7 @@ def home(request):
         }
         '''
 
-    local_query_result = get_data_from_local(query)
+    local_query_result = get_response_from_local(query)
     for data in local_query_result:
         movies_title.append({'id':data['id']['value'],'title':data['title']['value']})
 
