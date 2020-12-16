@@ -18,10 +18,10 @@ def get_data_from_local(query_to_send):
         return response.json()['results']['bindings']
     except ValueError:
         print("JSON Bermasalah atau Jena Fuseki Return 400")
-        return None
+        return []
     except:
         print("Jena Fuseki belum dijalankan")
-        return None
+        return []
 
 '''
 Fungsi untuk mengambil response data dari dataset remote
