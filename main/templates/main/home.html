@@ -9,35 +9,63 @@
 {% endblock meta %}
 
 {% block content %}
-  <div class="home">
-    <div class="greeting">
-      Selamat datang!
-    </div>
-    <div class="intro">
-      Berikut merupakan daftar film yang tersedia pada database SNX
-    </div>
-    <div class="subtable">
-      <table id="myTable" class="display">
-        <thead>
-          <tr>
-            <th>Judul Film</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%for data in data_title%}
-            <tr>
-              <td>{{ data.title }}</td>
-              <td><a href="/detail/?id={{ data.id }}" class="button">Detail</a></td>
-            </tr>
-          {%endfor%}
-        </tbody>
-      </table>
-    </div>
+<div class="home">
+  <div class="greeting">
+    Selamat datang!
   </div>
-  <script>
-    $(document).ready( function () {
-      $('#myTable').DataTable();
-    });
-  </script>
+  <div class="intro">
+    Berikut merupakan daftar film yang tersedia pada database SNX
+  </div>
+  <div class="subtable">
+    <table id="myTable" class="display">
+      <div class="search-bar">
+        <label>Title
+          <input id="title-search" type="text" placeholder="" />
+        </label>
+      </div>
+      <div class="search-bar">
+        <label>Category
+          <input id="category-search" type="text" placeholder="" />
+        </label>
+      </div>
+      <div class="search-bar">
+        <label>Release Year
+          <input id="year-search" type="text" placeholder="" />
+        </label>
+      </div>
+      <div class="search-bar">
+        <label>Director
+          <input id="director-search" type="text" placeholder="" />
+        </label>
+      </div>
+      <thead>
+        <tr>
+          <th>Judul Film</th>
+          <th hidden>Judul</th>
+          <th hidden>Kategori</th>
+          <th>Tahun</th>
+          <th hidden>Sutradara</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for data in data_title%}
+        <tr>
+          <td>
+            <div>{{ data.title }}</div>
+            <div class="category-list">{{ data.category }}</div>
+            <div class="director-list">By: {{ data.director }}</div>
+          </td>
+          <td hidden>{{ data.title }}</td>
+          <td hidden>{{ data.category }}</td>
+          <td>{{ data.year }}</td>
+          <td hidden>{{ data.director }}</td>
+          <td><a href="/detail/?id={{ data.id }}" class="button">Detail</a></td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript" src={% static 'js/script.js' %}></script>
 {% endblock content %}
