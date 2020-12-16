@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .utils.constants import FUSEKI_URL, PREFIXES
 
 from .utils.helpers import (get_data_from_local, get_data_from_remote, 
-get_film_object_from_id, get_combined_individual_film_detail)
+get_film_object_from_id)
 
 '''
 Fungsi untuk mengambil data spesifik film

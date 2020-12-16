@@ -46,22 +46,3 @@ def get_film_object_from_id(film_id):
     film_object_name = triple[0]['uri']['value'].split("/")[-1]
     
     return film_object_name
-
-'''
-Fungsi untuk menggabungkan data dari lokal dan remote
-'''
-def get_combined_individual_film_detail(query_to_send):
-    combined_data = {}
-    local_query_result = get_data_from_local(query_to_send)[0]
-    print(local_query_result)
-    remote_query_result = get_data_from_remote(query_to_send)
-
-    for key in local_query_result:
-        combined_data[key] = local_query_result[key]['value']
-
-    for row in remote_query_result:
-        combined_data['distributor'] = row.distributor
-        combined_data['producer'] = row.producer
-        combined_data['homepage'] = row.homepage
-
-    return combined_data
