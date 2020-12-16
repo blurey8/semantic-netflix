@@ -30,21 +30,38 @@ def get_data_from_remote(query_to_send):
     return data_graph_dbpedia.query(PREFIXES + query_to_send)
 
 '''
+Fungsi untuk mengambil nama film yang menjadi objek berdasarkan ID
+'''
+def get_film_object_from_id(film_id):
+    id_formatted = '\"{}\"'.format(film_id)
+    
+    query = \
+    '''
+    SELECT * WHERE { 
+        ?uri snp:id %s ;
+    }
+    ''' % (id_formatted)
+    
+    triple = get_data_from_local(query)
+    film_object_name = triple[0]['uri']['value'].split("/")[-1]
+    
+    return film_object_name
+
+'''
 Fungsi untuk menggabungkan data dari lokal dan remote
 '''
-def get_film_data(query_to_send):
+def get_combined_individual_film_detail(query_to_send):
     combined_data = {}
-    local_query_result = get_data_from_local(query_to_send)
+    local_query_result = get_data_from_local(query_to_send)[0]
+    print(local_query_result)
     remote_query_result = get_data_from_remote(query_to_send)
 
-    if local_data != None:
-        for key in local_query_result:
-            combined_data[key] = local_query_result[key]['value']
+    for key in local_query_result:
+        combined_data[key] = local_query_result[key]['value']
 
-        for row in remote_query_result:
-            combined_data['distributor'] = row.distributor
-            combined_data['producer'] = row.producer
-            combined_data['homepage'] = row.homepage    
-    else:
-        print("Query data tidak dapat dilakukan")
+    for row in remote_query_result:
+        combined_data['distributor'] = row.distributor
+        combined_data['producer'] = row.producer
+        combined_data['homepage'] = row.homepage
+
     return combined_data

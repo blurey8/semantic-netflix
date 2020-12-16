@@ -55,8 +55,8 @@ body {
   color: white;
 }
 
+font-size: 20px;
 .greeting {
-  font-size: 20px;
   padding: 20px 15px;
 }
 
@@ -67,4 +67,17 @@ body {
 
 .subtable {
   padding: 15px;
+}
+
+.button {
+  background-color: #ff8900;
+  border: none;
+  padding: 5px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 2px 2px;
+  cursor: pointer;
+  color: white;
 }

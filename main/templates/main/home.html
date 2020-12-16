@@ -21,12 +21,14 @@
         <thead>
           <tr>
             <th>Judul Film</th>
+            <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
           {%for data in data_title%}
             <tr>
-              <td><a href="/detail?id={{ data.id }}">{{ data.title }}</a></td>
+              <td>{{ data.title }}</td>
+              <td><a href="/detail/?id={{ data.id }}" class="button">Detail</a></td>
             </tr>
           {%endfor%}
         </tbody>
