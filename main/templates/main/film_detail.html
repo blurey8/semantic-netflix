@@ -34,13 +34,52 @@
       <div class="desc">Country:</div>
       {{detail_film.country}}
     </div>
+
+    {%if detail_film.duration%}
     <div class="even">
       <div class="desc">Duration:</div>
       {{detail_film.duration}}
     </div>
+    {%endif%}
+
+    {%if detail_film.numOfSeasons%}
+    <div class="even">
+      <div class="desc">Number of seasons:</div>
+      {{detail_film.numOfSeasons}}
+    </div>
+    {%endif%}
+
     <div class="odd">
       <div class="desc">Rating:</div>
       {{detail_film.rating}}
     </div>
+
+    <div class="even">
+      <div class="desc">Distributor:</div>
+      {%if 'distributor' in detail_film%}
+        {{detail_film.distributor}}
+      {%else%}
+        No data
+      {%endif%}
+    </div>
+
+    <div class="odd">
+      <div class="desc">Producer:</div>
+      {%if 'producer' in detail_film%}
+        {{detail_film.producer}}
+      {%else%}
+        No data
+      {%endif%}
+    </div>
+
+    <div class="even">
+      <div class="desc">Homepage:</div>
+      {%if 'homepage' in detail_film%}
+        {{detail_film.homepage}}
+      {%else%}
+        No data
+      {%endif%}
+    </div>
+
   </div>
 {% endblock content %}
