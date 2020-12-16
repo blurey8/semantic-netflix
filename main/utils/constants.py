@@ -1,4 +1,6 @@
 FUSEKI_URL = 'http://localhost:3030/ds/query'
+DBPEDIA_URL = 'http://dbpedia.org/sparql'
+WIKIDATA_URL = 'https://query.wikidata.org/sparql'
 PREFIXES = \
 '''
 PREFIX snr: <http://skulite.org/snr/>
