@@ -50,7 +50,6 @@ body {
   z-index: 9999;
   display: flex;
   background: #ff8900;
-
   font-size: 20px;
   color: white;
 }
@@ -93,7 +92,7 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .dataTables_filter {

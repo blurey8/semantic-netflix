@@ -5,6 +5,8 @@ from .constants import *
 '''
 Fungsi untuk mengambil response data dari dataset lokal
 '''
+
+
 def get_data(query_to_send, destination=FUSEKI_URL):
     try:
         response = requests.get(destination, params = {
@@ -20,9 +22,12 @@ def get_data(query_to_send, destination=FUSEKI_URL):
         print("Terjadi Kesalahan")
         return []
 
+
 '''
 Fungsi untuk mengambil semua film
 '''
+
+
 def get_all_films():
     query = \
     '''
@@ -39,9 +44,12 @@ def get_all_films():
     query_result = get_data(query)
     return query_result
 
+
 '''
 Fungsi untuk mengambil nama film yang menjadi objek berdasarkan ID dari dataset lokal
 '''
+
+
 def get_film_object_dbpedia(film_id):
     id_formatted = '\"{}\"'.format(film_id)
     
@@ -57,9 +65,12 @@ def get_film_object_dbpedia(film_id):
         return film_object_name
     return None
 
+
 '''
 Fungsi untuk mengambil nama film yang menjadi objek berdasarkan ID dari dataset Wikidata
 '''
+
+
 def get_film_object_wikidata(film_id):
     id_formatted = '\"{}\"'.format(film_id)
 
@@ -93,9 +104,12 @@ def get_film_object_wikidata(film_id):
         return film_object_name
     return None
 
+
 '''
 Fungsi untuk mengambil detail sebuah film  dari lokal
 '''
+
+
 def get_film_detail_local(film_id):
     id_formatted = '\"{}\"'.format(film_id)
 
@@ -122,9 +136,12 @@ def get_film_detail_local(film_id):
         return film_detail_formatter(query_result[0])
     return {}
 
+
 '''
 Fungsi untuk mengambil detail sebuah film  dari DBPedia
 '''
+
+
 def get_film_detail_dbpedia(film_object_name):
     query = \
     '''
@@ -141,9 +158,12 @@ def get_film_detail_dbpedia(film_object_name):
         return film_detail_formatter(query_result[0])
     return {}
 
+
 '''
 Fungsi untuk mengambil detail sebuah film  dari DBPedia
 '''
+
+
 def get_film_detail_wikidata(film_object_name):
     query = \
     '''
@@ -161,9 +181,12 @@ def get_film_detail_wikidata(film_object_name):
         return film_detail_formatter(query_result[0])
     return {}
 
+
 '''
 Film detail formatter untuk dictionary hasil query dengan susunan yang lebih nyaman dibaca
 '''
+
+
 def film_detail_formatter(query_result):
     for key in query_result:
         query_result[key] = query_result[key]['value']

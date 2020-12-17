@@ -1,4 +1,3 @@
-// alert('halo');
 $(document).ready(function () {
     var table = $('#myTable').DataTable({
         "columnDefs": [

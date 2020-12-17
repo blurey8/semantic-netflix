@@ -87,20 +87,3 @@ def film_detail(request):
 
     context = {"detail_film": film_details}
     return render(request, 'main/film_detail.html', context)
-
-
-'''
-Fungsi untuk melakukan pencarian film berdasarkan judul
-'''
-
-
-def film_search(request):
-
-    # TODO: Cari film berdasarkan judul -> Reyhan
-    # TODO: Filter Pencarian -> Reyhan
-    # Contoh query judul = http://127.0.0.1:8000/search?title=murder%20in%20%20park
-
-    title_film = request.GET.get('title').lower()
-    title_formatted = '\"{}\"'.format(title_film)
-
-    pass
