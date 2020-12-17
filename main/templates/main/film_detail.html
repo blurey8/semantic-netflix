@@ -12,37 +12,61 @@
     </div>
     <div class="even">
       <div class="desc">Description:</div>
-      {{detail_film.description}}
+      {%if 'description' in detail_film%}
+        {{detail_film.description}}
+      {%else%}
+        No data
+      {%endif%}
     </div>
     <div class="odd">
       <div class="desc">Director:</div>
-      {{detail_film.director}}
+      {%if 'director' in detail_film%}
+        {{detail_film.director}}
+      {%else%}
+        No data
+      {%endif%}
     </div>
     <div class="even">
       <div class="desc">Released in:</div>
-      {{detail_film.releaseYear}}
+      {%if 'releaseYear' in detail_film%}
+        {{detail_film.releaseYear}}
+      {%else%}
+        No data
+      {%endif%}
     </div>
     <div class="odd">
       <div class="desc">Category:</div>
-      {{detail_film.category}}
+      {%if 'category' in detail_film%}
+        {{detail_film.category}}
+      {%else%}
+        No data
+      {%endif%}
     </div>
     <div class="even">
       <div class="desc">Date added:</div>
-      {{detail_film.dateAdded}}
+      {%if 'dateAdded' in detail_film%}
+        {{detail_film.dateAdded}}
+      {%else%}
+        No data
+      {%endif%}
     </div>
     <div class="odd">
       <div class="desc">Country:</div>
-      {{detail_film.country}}
+      {%if 'country' in detail_film%}
+        {{detail_film.country}}
+      {%else%}
+        No data
+      {%endif%}
     </div>
 
-    {%if detail_film.duration%}
+    {%if 'duration' in detail_film%}
     <div class="even">
       <div class="desc">Duration:</div>
       {{detail_film.duration}}
     </div>
     {%endif%}
 
-    {%if detail_film.numOfSeasons%}
+    {%if 'numOfSeasons' in detail_film%}
     <div class="even">
       <div class="desc">Number of seasons:</div>
       {{detail_film.numOfSeasons}}
@@ -51,7 +75,11 @@
 
     <div class="odd">
       <div class="desc">Rating:</div>
-      {{detail_film.rating}}
+      {%if 'rating' in detail_film%}
+        {{detail_film.rating}}
+      {%else%}
+        No data
+      {%endif%}
     </div>
 
     <div class="even">
